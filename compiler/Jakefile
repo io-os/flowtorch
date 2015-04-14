@@ -1,0 +1,67 @@
+var path = require('path');
+var builtOutputDirectory = path.resolve("./built");
+var compilerSourceDirectory = path.resolve("./src");
+
+// add node_modules to path so we don't need global modules, prefer the modules by adding them first
+var nodeModulesPathPrefix = path.resolve("./node_modules/.bin/") + path.delimiter;
+if (process.env.path !== undefined) {
+  process.env.path = nodeModulesPathPrefix + process.env.path;
+} else if (process.env.PATH !== undefined) {
+  process.env.PATH = nodeModulesPathPrefix + process.env.PATH;
+}
+
+function exec(cmd, completeHandler) {
+  var ex = jake.createExec([cmd], {windowsVerbatimArguments: true});
+  // Add listeners for output and error
+  ex.addListener("stdout", function(output) {
+    process.stdout.write(output);
+  });
+  ex.addListener("stderr", function(error) {
+    process.stderr.write(error);
+  });
+  ex.addListener("cmdEnd", function() {
+  if (completeHandler) {
+    completeHandler();
+  }
+    complete();
+  });
+  ex.addListener("error", function(e, status) {
+    fail("Process exited with code " + status);
+  })
+  ex.run();
+}
+
+/*
+rule('.js', '.ts', {async: true}, function () {
+  var cmd = 'tsc '+this.name+' --module CommonJS --out '+path.join(builtOutputDirectory, path.basename(this.source))+' --removeComments';
+  console.log(cmd);
+  exec(cmd);
+});*/
+
+desc("Create output dir");
+directory(builtOutputDirectory);
+
+task('built/compiler.js', [builtOutputDirectory], function() {
+  var sources = new jake.FileList();
+  sources.include('src/*.ts');
+  
+  var cmd = 'tsc '+sources.join(" ")+' --module CommonJS --out '+this.name+' --removeComments';
+  console.log(cmd);
+  exec(cmd);
+}, { async: false });
+
+desc("Typescript compiles everything");
+task("compile", ['built/compiler.js'], {async: false});
+
+desc("Default Task");
+task("default", ["compile"], function() {
+  
+}, {async: false});
+
+/*
+desc("Runs browserify on run.js to produce a file suitable for running tests in the browser");
+task("browserify", ["tests", builtLocalDirectory, nodeServerOutFile], function() {
+var cmd = 'browserify built/local/run.js -o built/local/bundle.js';
+exec(cmd);
+}, {async: true});
+*/

@@ -1,15 +1,15 @@
+GraphTabView = require './flowtorch-graph-view'
+
+Flowtorch = Flowtorch || {}
 module.exports =
-class FlowtorchView
+class Flowtorch.View
   constructor: (serializeState) ->
     # Create root element
     @element = document.createElement('div')
     @element.classList.add('flowtorch')
 
-    # Create message element
-    message = document.createElement('div')
-    message.textContent = "The Flowtorch package is Alive! It's ALIVE!"
-    message.classList.add('message')
-    @element.appendChild(message)
+    @tab = new GraphTab({ parent: @, path: '/Users/gray/edge/package.json', name: 'package.json' })
+    @tab.createTab()
 
   # Returns an object that can be retrieved when package is activated
   serialize: ->

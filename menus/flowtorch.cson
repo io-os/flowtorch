@@ -16,6 +16,10 @@
           'label': 'Toggle'
           'command': 'flowtorch:toggle'
         }
+        {
+          'label': 'Flowtorch - Create Graph',
+          'command': 'flowtorch:create-graph'
+        }
       ]
     ]
   }

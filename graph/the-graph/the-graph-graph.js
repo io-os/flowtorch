@@ -106,7 +106,7 @@
       this.props.graph.on("removeEdge", this.resetPortRoute);
       this.props.graph.on("removeInitial", this.resetPortRoute);
 
-      // Listen to noflo graph object's events
+      // Listen to graph object's events
       this.props.graph.on("changeNode", this.markDirty);
       this.props.graph.on("changeInport", this.markDirty);
       this.props.graph.on("changeOutport", this.markDirty);
@@ -203,7 +203,7 @@
       }
     },
     getComponentInfo: function (componentName) {
-      return this.props.library[componentName];
+      return this.props.library[componentName] || this.props.graph.getComponentInfo(componentName);
     },
     portInfo: {},
     getPorts: function (graph, processName, componentName) {
@@ -453,6 +453,13 @@
         } else if (componentInfo && componentInfo.iconsvg) {
           iconsvg = componentInfo.iconsvg;
         }
+        
+        if (node.metadata.icon) {
+          icon = node.metadata.icon;
+        } else if (node.metadata.iconsvg) {
+          iconsvg = node.metadata.iconsvg;
+        }
+        
         var selected = (self.state.selectedNodes[key] === true);
         if (selected) {
           selectedIds.push(key);

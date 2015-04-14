@@ -3,14 +3,13 @@
   "main": "./lib/flowtorch",
   "version": "0.0.0",
   "description": "A short description of your package",
-  "activationCommands": {
-    "atom-workspace": "flowtorch:toggle"
-  },
-  "repository": "https://github.com/atom/flowtorch",
+  "repository": "https://github.com/io-os/flowtorch",
   "license": "MIT",
   "engines": {
     "atom": ">=0.174.0 <2.0.0"
   },
   "dependencies": {
+    "escodegen": "^1.6.1",
+    "esprima": "^2.0.0"
   }
 }

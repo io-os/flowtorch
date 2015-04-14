@@ -18,7 +18,7 @@
     zbpSmall: 0.01,
     config: {
       nodeSize: defaultNodeSize,
-      nodeWidth: defaultNodeSize,
+      nodeWidth: defaultNodeSize * 2,
       nodeRadius: defaultNodeRadius,
       nodeHeight: defaultNodeSize,
       autoSizeNode: true,
